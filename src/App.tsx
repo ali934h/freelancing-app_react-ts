@@ -1,6 +1,14 @@
-function App() {
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Auth from "./pages/Auth";
+
+type Props = {};
+
+function App({}: Props) {
   return (
-    <div className="font-vazir justify-center gap-3 bg-red-400">علی حسینی</div>
+    <Routes>
+      <Route path="/auth" element={<Auth />} />
+    </Routes>
   );
 }
 
