@@ -1,5 +1,6 @@
+/* src/index.css */
+@import url("/fonts.css");
 @import "tailwindcss";
-@import "/fonts.css";
 
 /* app.css */
 @theme {
