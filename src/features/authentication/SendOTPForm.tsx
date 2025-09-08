@@ -1,42 +1,25 @@
-import React, { useState } from "react";
-import type { FormEvent, ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import TextField from "../../ui/TextField";
 
 function SendOTPForm() {
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!phoneNumber.trim()) return;
-
-    // Here you will send the OTP request
-    console.log("Sending OTP to:", phoneNumber);
-  }
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setPhoneNumber(e.target.value);
-  }
-
+  };
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(phoneNumber);
+  };
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex gap-x-1">
-        <label htmlFor="phoneNumber" className="sr-only">
-          Phone Number
-        </label>
-        <input
-          id="phoneNumber"
-          className="rounded-md border p-1"
-          placeholder="Phone Number"
-          type="tel"
+      <form onSubmit={submitHandler}>
+        <TextField
+          idTitle="phoneNumber"
+          onChange={inputHandler}
+          label="Phone Number"
+          title="Send"
           value={phoneNumber}
-          onChange={handleChange}
         />
-        <button
-          className="rounded-md border p-1"
-          type="submit"
-          disabled={!phoneNumber.trim()}
-        >
-          Send Phone
-        </button>
       </form>
     </div>
   );
