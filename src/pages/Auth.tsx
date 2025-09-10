@@ -1,6 +1,7 @@
 import React from "react";
 import SendOTPForm from "../features/authentication/SendOTPForm";
 import CheckOTPForm from "../features/authentication/CheckOTPForm";
+import http from "../services/httpServices";
 
 type Props = {};
 

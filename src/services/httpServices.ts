@@ -1,16 +1,16 @@
-import axios, { type AxiosInstance } from "axios";
+import axios from "axios";
 
 const app = axios.create({
-  baseURL: "https://freelancing-app.api.alihosseini.dev",
+  baseURL: "https://freelancing-app.api.alihosseini.dev/api",
   withCredentials: true,
 });
 
-export default {
-  get: <T = unknown>(url: string, config?: object) => app.get<T>(url, config),
-  post: <T = unknown>(url: string, data?: unknown, config?: object) =>
-    app.post<T>(url, data, config),
-  delete: <T = unknown>(url: string, config?: object) =>
-    app.delete<T>(url, config),
-  patch: <T = unknown>(url: string, data?: unknown, config?: object) =>
-    app.patch<T>(url, data, config),
+const http = {
+  get: app.get,
+  post: app.post,
+  put: app.put,
+  patch: app.patch,
+  delete: app.delete,
 };
+
+export default http;
