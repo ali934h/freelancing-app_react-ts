@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, type FormEvent } from "react";
 import OTPInput from "react-otp-input";
 
 type Props = {};
 
 function CheckOTPForm({}: Props) {
   const [otp, setOtp] = useState("");
-
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <p>Please Enter the Code</p>
       <OTPInput
         value={otp}

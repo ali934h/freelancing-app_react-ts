@@ -2,16 +2,21 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import TextField from "../../ui/TextField";
 import { useMutation } from "@tanstack/react-query";
 import { getOtp } from "../../services/authServices";
+import toast from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
 
-function SendOTPForm() {
+function SendOTPForm({ setAuthStep }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const sendOtpHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(phoneNumber);
     try {
       const data = await mutateAsync({ phoneNumber });
-      console.log(data);
-    } catch (error) {}
+      toast.success(data.message);
+      setAuthStep(2);
+    } catch (error) {
+      toast.error(error as string);
+    }
   };
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: getOtp,
@@ -25,9 +30,13 @@ function SendOTPForm() {
           label="Phone Number"
           value={phoneNumber}
         />
-        <button type="submit" className="border">
-          Send
-        </button>
+        {isPending ? (
+          <BeatLoader color="#67f1f6" />
+        ) : (
+          <button type="submit" className="border">
+            Send
+          </button>
+        )}
       </form>
     </div>
   );
