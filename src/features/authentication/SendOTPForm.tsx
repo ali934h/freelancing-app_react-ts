@@ -5,28 +5,19 @@ import { getOtp } from "../../services/authServices";
 import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 
-function SendOTPForm({ setAuthStep }) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const sendOtpHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(phoneNumber);
-    try {
-      const data = await mutateAsync({ phoneNumber });
-      toast.success(data.message);
-      setAuthStep(2);
-    } catch (error) {
-      toast.error(error as string);
-    }
-  };
-  const { isPending, error, data, mutateAsync } = useMutation({
-    mutationFn: getOtp,
-  });
+function SendOTPForm({
+  setAuthStep,
+  onChange,
+  phoneNumber,
+  sendOtpHandler,
+  isPending,
+}) {
   return (
     <div>
       <form onSubmit={sendOtpHandler}>
         <TextField
           idTitle="phoneNumber"
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={onChange}
           label="Phone Number"
           value={phoneNumber}
         />
