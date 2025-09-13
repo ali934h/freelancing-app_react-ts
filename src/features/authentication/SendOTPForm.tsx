@@ -1,17 +1,7 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
 import TextField from "../../ui/TextField";
-import { useMutation } from "@tanstack/react-query";
-import { getOtp } from "../../services/authServices";
-import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 
-function SendOTPForm({
-  setAuthStep,
-  onChange,
-  phoneNumber,
-  sendOtpHandler,
-  isPending,
-}) {
+function SendOTPForm({ onChange, phoneNumber, sendOtpHandler, isPending }) {
   return (
     <div>
       <form onSubmit={sendOtpHandler}>

@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import SendOTPForm from "./SendOTPForm";
 import CheckOTPForm from "./CheckOTPForm";
 import { useMutation } from "@tanstack/react-query";
@@ -10,14 +10,18 @@ type Props = {};
 function AuthContainer({}: Props) {
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [authStep, setAuthStep] = useState(1);
+  const [authStep, setAuthStep] = useState(2);
 
-  const { isPending, error, data, mutateAsync } = useMutation({
+  const {
+    isPending,
+    error,
+    data: otpResponse,
+    mutateAsync,
+  } = useMutation({
     mutationFn: getOtp,
   });
   const sendOtpHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(phoneNumber);
     try {
       const data = await mutateAsync({ phoneNumber });
       toast.success(data.message);
@@ -44,6 +48,7 @@ function AuthContainer({}: Props) {
       case 2:
         return (
           <CheckOTPForm
+            otpResponse={otpResponse}
             phoneNumber={phoneNumber}
             sendOtpHandler={sendOtpHandler}
             setAuthStep={setAuthStep}

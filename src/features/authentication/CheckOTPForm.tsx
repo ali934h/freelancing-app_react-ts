@@ -1,14 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import OTPInput from "react-otp-input";
 import { checkOtp } from "../../services/authServices";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { FaRegEdit } from "react-icons/fa";
+import { BeatLoader } from "react-spinners";
 const RESEND_TIME = 4;
 type Props = {};
 
-function CheckOTPForm({ phoneNumber, setAuthStep, sendOtpHandler }) {
+function CheckOTPForm({
+  phoneNumber,
+  setAuthStep,
+  sendOtpHandler,
+  otpResponse,
+}) {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -55,6 +61,11 @@ function CheckOTPForm({ phoneNumber, setAuthStep, sendOtpHandler }) {
           </button>
         )}
       </div>
+      <div>{otpResponse && otpResponse.message}</div>
+      <FaRegEdit
+        className="cursor-pointer text-2xl"
+        onClick={() => setAuthStep(1)}
+      />
       <OTPInput
         value={otp}
         onChange={setOtp}
@@ -65,9 +76,14 @@ function CheckOTPForm({ phoneNumber, setAuthStep, sendOtpHandler }) {
         inputStyle={"border rounded-md w-10 block h-10 text-center"}
         skipDefaultStyles
       />
-      <button type="submit" className="cursor-pointer rounded-md border">
-        Confirm
-      </button>
+
+      {isPending ? (
+        <BeatLoader color="#67f1f6" />
+      ) : (
+        <button type="submit" className="cursor-pointer rounded-md border">
+          Confirm
+        </button>
+      )}
     </form>
   );
 }
