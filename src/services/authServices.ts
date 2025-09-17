@@ -16,3 +16,11 @@ export function checkOtp(data) {
       throw error.response.data.message;
     });
 }
+export function completeProfile(data) {
+  return http
+    .post("/user/complete-profile", data)
+    .then(({ data }) => data.data)
+    .catch((error) => {
+      throw error.response.data.message;
+    });
+}

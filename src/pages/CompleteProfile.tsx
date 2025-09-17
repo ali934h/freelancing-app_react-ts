@@ -5,7 +5,7 @@ type Props = {};
 
 function CompleteProfile({}: Props) {
   return (
-    <div>
+    <div className="flex justify-center pt-10">
       <CompleteProfileForm />
     </div>
   );

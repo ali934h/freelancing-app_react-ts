@@ -42,7 +42,6 @@ function AuthContainer({}: Props) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPhoneNumber(e.target.value)
             }
-            setAuthStep={setAuthStep}
           />
         );
       case 2:
@@ -56,7 +55,9 @@ function AuthContainer({}: Props) {
         );
     }
   };
-  return <div>{renderStep()}</div>;
+  return (
+    <div className="flex items-center justify-center pt-10">{renderStep()}</div>
+  );
 }
 
 export default AuthContainer;

@@ -9,14 +9,16 @@ type Props = {
 
 function TextField({ value, onChange, label, idTitle }: Props) {
   return (
-    <div>
-      <label htmlFor={idTitle}>{label}</label>
+    <div className="flex flex-col gap-y-1">
+      <label className="label" htmlFor={idTitle}>
+        {label}
+      </label>
       <input
-        type="tel"
+        type="text"
         id={idTitle}
         value={value}
         onChange={onChange}
-        className="border"
+        className="input w-full"
         autoComplete="off"
       />
     </div>

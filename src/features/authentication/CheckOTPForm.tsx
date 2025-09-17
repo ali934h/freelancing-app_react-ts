@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { BeatLoader } from "react-spinners";
+import toast from "react-hot-toast";
 const RESEND_TIME = 4;
 type Props = {};
 
@@ -17,20 +18,6 @@ function CheckOTPForm({
 }) {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const { user, message } = await mutateAsync({ phoneNumber, otp });
-      if (user.isActive) {
-        if (user.role === "OWNER") navigate("/owner/dashboard");
-        if (user.role === "FREELANCER") navigate("/freelancer/dashboard");
-      } else {
-        navigate("/complete-profile");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const { isPending, error, data, mutateAsync } = useMutation({
     mutationFn: checkOtp,
   });
@@ -47,25 +34,57 @@ function CheckOTPForm({
     }, 1000);
     return () => clearInterval(time);
   }, []);
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const { user, message } = await mutateAsync({ phoneNumber, otp });
+      if (user.isActive) {
+        if (user.status !== 2) {
+          navigate("/");
+          toast("Your Account is pending to active");
+        } else {
+          switch (user.role) {
+            case "OWNER":
+              navigate("/owner/dashboard");
+              break;
+            case "FREELANCER":
+              navigate("/freelancer/dashboard");
+              break;
+            case "ADMIN":
+              navigate("/admin/dashboard");
+              break;
+          }
+        }
+      } else {
+        navigate("/complete-profile");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   return (
-    <form onSubmit={submitHandler}>
-      <p>Please Enter the Code</p>
-      <IoArrowBackOutline
-        onClick={() => setAuthStep(1)}
-        className="cursor-pointer text-2xl"
-      />
-      <div>
-        {timer || (
-          <button className="cursor-pointer" onClick={sendOtpHandler}>
-            Resend
-          </button>
-        )}
+    <form
+      onSubmit={submitHandler}
+      className="flex flex-col items-center justify-center gap-y-3 sm:w-sm"
+    >
+      <div className="flex w-full items-center justify-between">
+        <span>Please Enter the Code</span>
+        <IoArrowBackOutline
+          onClick={() => setAuthStep(1)}
+          className="cursor-pointer text-xl"
+        />
       </div>
-      <div>{otpResponse && otpResponse.message}</div>
-      <FaRegEdit
-        className="cursor-pointer text-2xl"
-        onClick={() => setAuthStep(1)}
-      />
+
+      <div></div>
+      <div className="flex gap-x-4">
+        <FaRegEdit
+          className="cursor-pointer text-xl"
+          onClick={() => setAuthStep(1)}
+        />
+        {otpResponse && otpResponse.message}
+      </div>
+
       <OTPInput
         value={otp}
         onChange={setOtp}
@@ -80,8 +99,16 @@ function CheckOTPForm({
       {isPending ? (
         <BeatLoader color="#67f1f6" />
       ) : (
-        <button type="submit" className="cursor-pointer rounded-md border">
+        <button type="submit" className="btn btn-primary w-full">
           Confirm
+        </button>
+      )}
+      {timer || (
+        <button
+          className="btn btn-accent btn-sm self-start"
+          onClick={sendOtpHandler}
+        >
+          Resend
         </button>
       )}
     </form>
