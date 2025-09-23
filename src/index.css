@@ -1,0 +1,15 @@
+/* src/index.css */
+@import url("/fonts.css");
+@import "tailwindcss";
+@plugin "daisyui" {
+  exclude: rootscrollgutter;
+
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
+/* app.css */
+@theme {
+  --font-vazir: "vazir";
+}
