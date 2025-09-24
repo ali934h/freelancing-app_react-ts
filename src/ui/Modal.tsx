@@ -1,14 +1,6 @@
-// React 18 + TypeScript + TailwindCSS + react-modal
-// Example shows: accessibility (setAppElement), smooth enter/exit animations with Tailwind,
-// closing via overlay click / ESC, and a typed wrapper component.
-
 import React from "react";
-import ReactDOM from "react-dom/client";
 import Modal from "react-modal";
 
-// IMPORTANT: Bind to your app root for a11y
-
-// ---------- Modal Wrapper (typed) ----------
 export interface AppModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -22,13 +14,10 @@ export function AppModal({
   title,
   children,
 }: AppModalProps) {
-  // Using object form for overlayClassName / className so we can attach Tailwind state classes
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      shouldCloseOnOverlayClick
-      shouldCloseOnEsc
       closeTimeoutMS={200} // match durations below
       contentLabel={title ?? "Modal"}
       overlayClassName={{
@@ -52,12 +41,6 @@ export function AppModal({
       // Prevent scroll behind modal on iOS/Safari too
       bodyOpenClassName="overflow-hidden"
       htmlOpenClassName="overflow-hidden"
-      // ARIA props
-      role="dialog"
-      aria={{ labelledby: title ? "app-modal-title" : undefined }}
-      // Better focus handling
-      shouldFocusAfterRender
-      shouldReturnFocusAfterClose
     >
       <div className="flex items-start justify-between gap-4">
         {title ? (
