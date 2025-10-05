@@ -8,3 +8,11 @@ export function getOwnerProjectsApi() {
       throw error.response.data.message;
     });
 }
+export function removeProjectApi(id) {
+  return http
+    .delete(`/project/${id}`)
+    .then(({ data }) => data.data)
+    .catch((error) => {
+      throw error.response.data.message;
+    });
+}

@@ -1,27 +1,21 @@
-import React, { useRef, useState } from "react";
+// src/features/projects/ProjectRow.tsx
+import { useState } from "react";
 import Table from "../../ui/Table";
 import toShortText from "../../utils/truncateText";
 import toShortDate from "../../utils/toShortDate";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import Modal from "react-modal";
 import { AppModal } from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import useRemoveProject from "./useRemoveProject";
+import CreateProjectForm from "./CreateProjectForm";
 
 type Props = {};
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
 Modal.setAppElement("#root");
 function ProjectRow({ project, index }) {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-
+  const { isDeleting, removeProject } = useRemoveProject();
   return (
     <Table.Row>
       <td className="text-center">{index + 1}</td>
@@ -61,7 +55,7 @@ function ProjectRow({ project, index }) {
               onRequestClose={() => setIsOpenEditModal(false)}
               title={`Edit ${project.title}`}
             >
-              this is modal
+              <CreateProjectForm />
             </AppModal>
           </>
           <>
@@ -77,7 +71,15 @@ function ProjectRow({ project, index }) {
               onRequestClose={() => setIsOpenDeleteModal(false)}
               title={`Delete ${project.title}`}
             >
-              this is modal
+              <ConfirmDelete
+                cancelDeleteHandler={() => setIsOpenDeleteModal(false)}
+                confirmDeleteHandler={() =>
+                  removeProject(project._id, {
+                    onSuccess: () => setIsOpenDeleteModal(false),
+                  })
+                }
+                resourceName={project.title}
+              />
             </AppModal>
           </>
         </div>
